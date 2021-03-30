@@ -240,8 +240,6 @@ def train(**kwargs):
                 "training": [],
               }
     import os
-    cwd = os.getcwd()
-    print("The current directory : " , cwd)
     # use the schema
     schema = cfg.TrainArgsSchema()
     # deserialize key-word arguments
@@ -249,7 +247,6 @@ def train(**kwargs):
     #print("PRINT THE TRAINING ARGUMENTS>> ", train_args)
     the_url=train_args['urls']
     r = requests.get(the_url, allow_redirects=True)
-    print(cfg.DATA_DIR)
     the_path=cfg.DATA_DIR+'/train_file.csv'
     open(the_path, 'wb').write(r.content)
     # 1. implement your training here
