@@ -268,9 +268,9 @@ def train(**kwargs):
     model.add(Dense(n_features))
     model.compile(optimizer='adam', loss='mse')
     # fit model
-    model.fit(X, y, epochs=400, verbose=0)
-    print(model)
-    model.save('my_model.h5')  # creates a HDF5 file 'my_model.h5'
+    model.fit(X, y, epochs=400, verbose=2)
+    model.save(cfg.DATA_MODEL+'/lstm.h5')  # creates a HDF5 file 'my_model.h5'
+    print("model saved")
     # 2. update "message"
     train_results = {"modelo": model}
     #train_results = { "Error": "No model implemented for training (train())" }
