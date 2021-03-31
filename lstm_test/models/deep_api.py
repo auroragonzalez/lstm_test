@@ -254,11 +254,28 @@ def train(**kwargs):
     df = pd.read_csv(the_path, sep=",")
     dataset = df.to_numpy()
     print(dataset)
+    dataset = df.to_numpy()
+    # choose a number of time steps
+    n_steps = 21
+    # convert into input/output
+    X, y = split_sequences(dataset, n_steps)
+    # the dataset knows the number of features, e.g. 2
+    n_features = X.shape[2]
+    # define model
+    model = Sequential()
+    model.add(LSTM(100, activation='relu', return_sequences=True, input_shape=(n_steps, n_features)))
+    model.add(LSTM(100, activation='relu'))
+    model.add(Dense(n_features))
+    model.compile(optimizer='adam', loss='mse')
+    # fit model
+    model.fit(X, y, epochs=400, verbose=0)
+    print(model)
+    model.save('my_model.h5')  # creates a HDF5 file 'my_model.h5'
     # 2. update "message"
-
-    train_results = { "Error": "No model implemented for training (train())" }
+    train_results = {"modelo": model}
+    #train_results = { "Error": "No model implemented for training (train())" }
     message["training"].append(train_results)
-
+    del model
     return message
 
 
