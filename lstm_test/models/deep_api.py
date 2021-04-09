@@ -181,6 +181,30 @@ def predict(**kwargs):
     :param kwargs:
     :return:
     """
+    # use the schema
+    schema = cfg.PredictArgsSchema()
+    # deserialize key-word arguments
+    pred_args = schema.load(kwargs)
+    #print("PRINT THE TRAINING ARGUMENTS>> ", train_args)
+    the_url=pred_args['urls']
+    r = requests.get(the_url, allow_redirects=True)
+    the_path=cfg.DATA_DIR+'/pred_file.csv'
+    open(the_path, 'wb').write(r.content)
+    # 1. implement your training here
+    print("Starting the prediction")
+    df = pd.read_csv(the_path, sep=",")
+    dataset = df.to_numpy()
+    print(dataset)
+    # choose a number of time steps
+    n_steps = pred_args['nSteps']
+    # convert into input/output
+    X, y = split_sequences(dataset, n_steps)
+    print("Loading model....")
+    model = load_model(cfg.DATA_MODEL+'/lstm.h5')
+    yhat = model.predict(X, verbose=0)
+    print(yhat)                      
+    print(y)
+
 
     if (not any([kwargs['urls'], kwargs['files']]) or
             all([kwargs['urls'], kwargs['files']])):
