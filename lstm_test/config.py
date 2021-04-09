@@ -48,12 +48,18 @@ class PredictArgsSchema(Schema):
         missing=None,
         description="Provide an URL of the data for the prediction"
     )
-    
+
     # an input parameter for prediction
     arg1 = fields.Integer(
         required=False,
         missing=1,
         description="Input argument 1 for the prediction"
+    )
+
+    nSteps = fields.Integer(
+        required=False,
+        missing=21,
+        description="Number of previous steps (datapoints considered) for each prediction within the LSTM training"
     )
 
 # Input parameters for train() (deepaas>=1.0.0)
@@ -74,4 +80,14 @@ class TrainArgsSchema(Schema):
         required=False,
         missing=1,
         description="Input argument 1 for training"
+    )
+    epochs = fields.Integer(
+        required=False,
+        missing=50,
+        description="Number of epochs for LSTM training"
+    )
+    nSteps = fields.Integer(
+        required=False,
+        missing=21,
+        description="Number of previous steps (datapoints considered) for each prediction within the LSTM training"
     )

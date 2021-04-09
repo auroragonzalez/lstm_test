@@ -254,9 +254,8 @@ def train(**kwargs):
     df = pd.read_csv(the_path, sep=",")
     dataset = df.to_numpy()
     print(dataset)
-    dataset = df.to_numpy()
     # choose a number of time steps
-    n_steps = 21
+    n_steps = train_args['nSteps']
     # convert into input/output
     X, y = split_sequences(dataset, n_steps)
     # the dataset knows the number of features, e.g. 2
@@ -268,7 +267,8 @@ def train(**kwargs):
     model.add(Dense(n_features))
     model.compile(optimizer='adam', loss='mse')
     # fit model
-    model.fit(X, y, epochs=400, verbose=2)
+    model.fit(X, y, epochs=train_args['epochs'], verbose=2)
+   # model.fit(X,y, epochs=20, verbose=2)
     model.save(cfg.DATA_MODEL+'/lstm.h5')  # creates a HDF5 file 'my_model.h5'
     print("model saved")
     # 2. update "message"
