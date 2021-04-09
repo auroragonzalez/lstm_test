@@ -192,7 +192,7 @@ def predict(**kwargs):
     open(the_path, 'wb').write(r.content)
     # 1. implement your training here
     print("Starting the prediction")
-    df = pd.read_csv(the_path, sep=",")
+    df = pd.read_csv(the_path, sep=",", header=None)
     dataset = df.to_numpy()
     print(dataset)
     # choose a number of time steps
@@ -200,9 +200,10 @@ def predict(**kwargs):
     # convert into input/output
     X, y = split_sequences(dataset, n_steps)
     print("Loading model....")
-    model = load_model(cfg.DATA_MODEL+'/lstm.h5')
+    model = load_model(cfg.MODELS_DIR+'/lstm.h5')
+    print("model loaded")
     yhat = model.predict(X, verbose=0)
-    print(yhat)                      
+    print(yhat)
     print(y)
 
 
@@ -293,7 +294,7 @@ def train(**kwargs):
     # fit model
     model.fit(X, y, epochs=train_args['epochs'], verbose=2)
    # model.fit(X,y, epochs=20, verbose=2)
-    model.save(cfg.DATA_MODEL+'/lstm.h5')  # creates a HDF5 file 'my_model.h5'
+    model.save(cfg.MODELS_DIR+'/lstm.h5')  # creates a HDF5 file 'my_model.h5'
     print("model saved")
     # 2. update "message"
     train_results = {"modelo": model}
