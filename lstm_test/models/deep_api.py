@@ -206,6 +206,7 @@ def predict(**kwargs):
     yhat = model.predict(X, verbose=0)
     print(yhat)
     print(y)
+    return(json.dumps({"prediction": yhat.tolist()}))
 
 
     if (not any([kwargs['urls'], kwargs['files']]) or
